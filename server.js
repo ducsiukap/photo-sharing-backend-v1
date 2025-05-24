@@ -1,17 +1,14 @@
-const express = require('express');
-const cors = require('cors');
+import app from './app.js';
+import dotenv from 'dotenv';
 
-const app = express();
-const PORT = process.env.PORT || 1303;
-const HOST = process.env.HOST || 'localhost';
-app.use(cors());
-app.use(express.json()); // body-parser
+// config .env
+dotenv.config();
 
-// app.METHOD(PATH, HANDLER)
-app.get('/', (req, res) => {
-    res.send('Backend webserver - vduczz');
-});
+// read from .env = process.env.VARIABLE_NAME
+const port = process.env.PORT || 8888;
+const hostname = process.env.HOSTNAME || 'localhost';
 
-app.listen(PORT, HOST, () => {
-    console.log(`Server is running on http://${HOST}:${PORT}`);
+// start the server
+app.listen(port, hostname, () => {
+    console.log(`Server is running on http://${hostname}:${port}`);
 });
