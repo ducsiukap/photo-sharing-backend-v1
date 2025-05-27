@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const userRouter = require('./routes/UserRouter');
 const photoRouter = require('./routes/PhotoRouter');
-
+const loginRegisterRoute = require('./routes/LoginRegisterRoute');
 const app = express();
 
 // milldleware
@@ -21,6 +21,9 @@ app.get('/', (req, res) => {
 app.use('/api/user', userRouter);
 // photo route
 app.use('/api/photo', photoRouter);
+
+// login, register
+app.use('/admin', loginRegisterRoute)
 
 
 // export app
