@@ -82,7 +82,7 @@ const login = async (req, res) => {
         if (!user) throw new Error('Login information is incorrect!');
 
         // console.log(process.env.JWT_SECRET);
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ _id: user._id, first_name: user.first_name, last_name: user.last_name }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.json({
             success: true,
             data: {

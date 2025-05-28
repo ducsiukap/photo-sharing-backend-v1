@@ -88,9 +88,73 @@ const getCommentByUserId = async (req, res) => {
     }
 }
 
+const postNewComment = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const comment = req.body.comment;
+        const user = req.user;
+
+        const photo = await Photo.findById(id);
+        const date_time = Date.now();
+        photo.comments.push({
+            comment: comment,
+            date_time: date_time,
+            user_id: user._id
+        });
+        photo.save();
+
+        res.json({
+            success: true,
+            data: {
+                comment: comment,
+                date_time: date_time,
+                user: {
+                    _id: user.id,
+                    first_name: user.first_name,
+                    last_name: user.last_name
+                }
+            }
+        });
+    } catch (error) {
+        res.json({
+            success: false,
+            error: error.message,
+        })
+    }
+}
+
+const postNewPhoto = async (req, res) => {
+    try {
+        const user = req.user;
+        const file = req.file;
+
+        console.log(">>> Save file: " + file.filename);
+
+        const photo = new Photo({
+            file_name: file.filename,
+            date_time: Date.now(),
+            user_id: user._id,
+            comments: []
+        });
+
+        await photo.save();
+
+        res.json({
+            success: true
+        })
+    } catch (error) {
+        res.json({
+            success: false,
+            error: error.message,
+        })
+    }
+}
+
 const photoController = {
     getPhotosOfUser,
-    getCommentByUserId
+    getCommentByUserId,
+    postNewComment,
+    postNewPhoto
 }
 
 module.exports = photoController;
